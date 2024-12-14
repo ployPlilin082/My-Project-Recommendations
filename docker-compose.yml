@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  php-apache-enviromment:
+    image: php:8.0-apache
+    container_name: php-apache-container
+    restart: always
+    volumes:
+      - ./domain name:/var/www/html  # แม็ปไดเร็กทอรีโค้ดของคุณกับไดเร็กทอรีในคอนเทนเนอร์
+    ports:
+      - "8080:80"  # แม็ปพอร์ตจากเครื่องโฮสต์กับคอนเทนเนอร์
+    environment:
+      - APACHE_RUN_USER=www-data
+      - APACHE_RUN_GROUP=www-data
+      - PHP_DISPLAY_ERRORS=1
+      - PHP_MEMORY_LIMIT=256M
+    networks:
+      - webnet
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: TM6534ElTM6534EL
+      MYSQL_DATABASE: u299560388_651138
+      MYSQL_USER: u299560388_651138
+      MYSQL_PASSWORD: TM6534El
+    volumes:
+      - ./mysql_data:/var/lib/mysql  # จัดเก็บข้อมูลฐานข้อมูลไว้ที่โฟลเดอร์ในเครื่อง
+    ports:
+      - "3306:3306"  # พอร์ตสำหรับเชื่อมต่อกับ MySQL
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge
